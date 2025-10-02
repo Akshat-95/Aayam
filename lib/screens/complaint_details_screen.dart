@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import '../widgets/custom_bottom_nav.dart';
+import '../models/complaint.dart';
 
 class ComplaintDetailsScreen extends StatefulWidget {
   final String imageUrl;
   final DateTime date;
   final String category;
   final String description;
-  final String status;
+  final ComplaintStatus status;
   final String location;
 
   const ComplaintDetailsScreen({
@@ -105,7 +106,7 @@ class _ComplaintDetailsScreenState extends State<ComplaintDetailsScreen> {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Text(
-                      widget.status,
+                      Complaint.statusToString(widget.status),
                       style: const TextStyle(
                         color: AppColors.primaryGreen,
                         fontWeight: FontWeight.w600,

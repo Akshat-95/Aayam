@@ -12,7 +12,7 @@ class DummyDataService {
         category: 'Roads',
         location: 'Main Street, Bus Stop',
         dateSubmitted: now.subtract(const Duration(days: 6, hours: 3)),
-        status: 'Pending',
+        status: ComplaintStatus.pending,
         imageUrl:
             'https://images.unsplash.com/photo-1509395176047-4a66953fd231?w=1200',
         latitude: 28.7041,
@@ -25,7 +25,7 @@ class DummyDataService {
         category: 'Street Lighting',
         location: 'Elm Street, Near Park',
         dateSubmitted: now.subtract(const Duration(days: 4, hours: 5)),
-        status: 'In Progress',
+        status: ComplaintStatus.inProgress,
         imageUrl:
             'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=1200',
         latitude: 28.7050,
@@ -38,7 +38,7 @@ class DummyDataService {
         category: 'Sanitation',
         location: 'Market Road',
         dateSubmitted: now.subtract(const Duration(days: 3, hours: 1)),
-        status: 'Worker Assigned',
+        status: ComplaintStatus.workerAssigned,
         imageUrl:
             'https://images.unsplash.com/photo-1581579182429-2c6cf2b3b5a1?w=1200',
         latitude: 28.7060,
@@ -51,7 +51,7 @@ class DummyDataService {
         category: 'Water Supply',
         location: 'Sunrise Colony',
         dateSubmitted: now.subtract(const Duration(days: 2, hours: 2)),
-        status: 'In Progress',
+        status: ComplaintStatus.inProgress,
         imageUrl:
             'https://images.unsplash.com/photo-1565228392251-8a3f2f67f1b2?w=1200',
         latitude: 28.7070,
@@ -64,7 +64,7 @@ class DummyDataService {
         category: 'Environment',
         location: 'Behind City Mall',
         dateSubmitted: now.subtract(const Duration(days: 1, hours: 7)),
-        status: 'Pending',
+        status: ComplaintStatus.pending,
         imageUrl:
             'https://images.unsplash.com/photo-1600180758890-86d0f1346f9e?w=1200',
         latitude: 28.7080,
@@ -77,7 +77,7 @@ class DummyDataService {
         category: 'Public Safety',
         location: 'Ring Road, Near Metro Station',
         dateSubmitted: now.subtract(const Duration(hours: 20)),
-        status: 'Resolved',
+        status: ComplaintStatus.resolved,
         imageUrl:
             'https://images.unsplash.com/photo-1503264116251-35a269479413?w=1200',
         latitude: 28.7090,
@@ -90,7 +90,7 @@ class DummyDataService {
         category: 'Noise',
         location: 'Green Avenue',
         dateSubmitted: now.subtract(const Duration(hours: 12)),
-        status: 'Worker Assigned',
+        status: ComplaintStatus.workerAssigned,
         imageUrl:
             'https://images.unsplash.com/photo-1516455207990-7a41ce80f7ee?w=1200',
         latitude: 28.7100,
@@ -103,7 +103,7 @@ class DummyDataService {
         category: 'Sanitation',
         location: 'Maple Street',
         dateSubmitted: now.subtract(const Duration(hours: 6)),
-        status: 'In Progress',
+        status: ComplaintStatus.inProgress,
         imageUrl:
             'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=1200',
         latitude: 28.7110,
@@ -116,7 +116,7 @@ class DummyDataService {
         category: 'Traffic',
         location: 'Crossroads',
         dateSubmitted: now.subtract(const Duration(hours: 2)),
-        status: 'Pending',
+        status: ComplaintStatus.pending,
         imageUrl:
             'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1200',
         latitude: 28.7120,
@@ -135,6 +135,7 @@ class DummyDataService {
         'lat': c.latitude,
         'lon': c.longitude,
         'category': c.category,
+        'status': Complaint.statusToString(c.status),
         'timeAgo':
             '${DateTime.now().difference(c.dateSubmitted).inHours} hours ago',
       };

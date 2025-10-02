@@ -5,6 +5,8 @@ import '../models/complaint.dart';
 import '../widgets/complaint_card.dart';
 import 'complaint_details_screen.dart';
 import '../widgets/custom_bottom_nav.dart';
+import 'camera_page.dart';
+import 'issues_map_page.dart';
 
 class MyComplaintsScreen extends StatefulWidget {
   const MyComplaintsScreen({super.key});
@@ -14,13 +16,13 @@ class MyComplaintsScreen extends StatefulWidget {
 }
 
 class _MyComplaintsScreenState extends State<MyComplaintsScreen> {
-  final List<String> _filters = [
-    'All',
-    'Active',
-    'Worker Assigned',
-    'In Progress',
-    'Completed',
-    'Closed',
+  final List<Map<String, Object>> _filters = [
+    {'label': 'All', 'icon': Icons.list},
+    {'label': 'Active', 'icon': Icons.fiber_manual_record},
+    {'label': 'Worker Assigned', 'icon': Icons.person},
+    {'label': 'In Progress', 'icon': Icons.play_arrow},
+    {'label': 'Completed', 'icon': Icons.check_circle},
+    {'label': 'Closed', 'icon': Icons.remove_circle},
   ];
 
   String _selectedFilter = 'All';
@@ -35,25 +37,25 @@ class _MyComplaintsScreenState extends State<MyComplaintsScreen> {
         return _allComplaints
             .where(
               (c) =>
-                  c.status.toLowerCase() != 'resolved' &&
-                  c.status.toLowerCase() != 'closed',
+                  c.status != ComplaintStatus.resolved &&
+                  c.status != ComplaintStatus.closed,
             )
             .toList();
       case 'Worker Assigned':
         return _allComplaints
-            .where((c) => c.status.toLowerCase() == 'worker assigned')
+            .where((c) => c.status == ComplaintStatus.workerAssigned)
             .toList();
       case 'In Progress':
         return _allComplaints
-            .where((c) => c.status.toLowerCase() == 'in progress')
+            .where((c) => c.status == ComplaintStatus.inProgress)
             .toList();
       case 'Completed':
         return _allComplaints
-            .where((c) => c.status.toLowerCase() == 'resolved')
+            .where((c) => c.status == ComplaintStatus.resolved)
             .toList();
       case 'Closed':
         return _allComplaints
-            .where((c) => c.status.toLowerCase() == 'closed')
+            .where((c) => c.status == ComplaintStatus.closed)
             .toList();
       default:
         return _allComplaints;
@@ -93,13 +95,23 @@ class _MyComplaintsScreenState extends State<MyComplaintsScreen> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: _filters.map((f) {
-                  final selected = _selectedFilter == f;
+                  final label = f['label'] as String;
+                  final icon = f['icon'] as IconData;
+                  final selected = _selectedFilter == label;
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 6),
                     child: ChoiceChip(
-                      label: Text(f),
+                      avatar: Icon(
+                        icon,
+                        size: 18,
+                        color: selected
+                            ? Colors.white
+                            : AppColors.secondaryText,
+                      ),
+                      label: Text(label),
                       selected: selected,
-                      onSelected: (_) => setState(() => _selectedFilter = f),
+                      onSelected: (_) =>
+                          setState(() => _selectedFilter = label),
                       selectedColor: AppColors.primaryGreen,
                       backgroundColor: Colors.white,
                       labelStyle: TextStyle(
@@ -132,9 +144,28 @@ class _MyComplaintsScreenState extends State<MyComplaintsScreen> {
       ),
       bottomNavigationBar: CustomBottomNav(
         currentIndex: _currentIndex,
-        transientIndices: const {},
-        onTap: (index) {
+        transientIndices: const {1},
+        onTap: (index) async {
+          // If the tapped index is transient (map), don't permanently change currentIndex
+          if (index == 1) {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const IssuesMapPage()),
+            );
+            return;
+          }
+
+          final prev = _currentIndex;
           setState(() => _currentIndex = index);
+
+          // Navigate to camera page when camera button is tapped
+          if (index == 2) {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const CameraPage()),
+            );
+            if (mounted) setState(() => _currentIndex = prev);
+          }
         },
       ),
     );

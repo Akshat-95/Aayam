@@ -71,33 +71,32 @@ class ComplaintCard extends StatelessWidget {
     return '${date.day}/${date.month}/${date.year}';
   }
 
-  Widget _statusBadge(String status) {
+  Widget _statusBadge(ComplaintStatus status) {
     Color bg;
-    Color fg = Colors.white;
-    switch (status.toLowerCase()) {
-      case 'pending':
+    final fg = Colors.white;
+    switch (status) {
+      case ComplaintStatus.pending:
         bg = Colors.orange;
         break;
-      case 'in progress':
+      case ComplaintStatus.inProgress:
         bg = Colors.blue;
         break;
-      case 'worker assigned':
+      case ComplaintStatus.workerAssigned:
         bg = Colors.purple;
         break;
-      case 'resolved':
-      case 'completed':
+      case ComplaintStatus.resolved:
+      case ComplaintStatus.closed:
         bg = Colors.green;
         break;
-      default:
-        bg = Colors.grey;
     }
+    final label = Complaint.statusToString(status);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
         color: bg,
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Text(status, style: TextStyle(color: fg, fontSize: 12)),
+      child: Text(label, style: TextStyle(color: fg, fontSize: 12)),
     );
   }
 }
