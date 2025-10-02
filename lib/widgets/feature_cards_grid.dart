@@ -3,6 +3,8 @@ import '../constants/app_styles.dart';
 import 'feature_card.dart';
 import '../screens/camera_page.dart';
 import '../screens/my_complaints_screen.dart';
+import '../screens/issues_map_page.dart';
+import '../screens/community_screen.dart';
 
 class FeatureCardsGrid extends StatelessWidget {
   const FeatureCardsGrid({super.key});
@@ -40,8 +42,13 @@ class FeatureCardsGrid extends StatelessWidget {
                   icon: Icons.location_on,
                   gradientDecoration: AppStyles.sustainabilityGradient,
                   onTap: () {
-                    // Handle issues near me tap
-                    print('Issues near me tapped');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const IssuesMapPage(centerOnUser: true),
+                      ),
+                    );
                   },
                 ),
               ),
@@ -65,8 +72,6 @@ class FeatureCardsGrid extends StatelessWidget {
                         builder: (context) => const MyComplaintsScreen(),
                       ),
                     );
-                    // Handle my complaints tap
-                    print('My Complaints tapped');
                   },
                 ),
               ),
@@ -78,8 +83,13 @@ class FeatureCardsGrid extends StatelessWidget {
                   icon: Icons.warning,
                   gradientDecoration: AppStyles.renewableGradient,
                   onTap: () {
-                    // Handle alerts & news tap
-                    print('Alerts & News tapped');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const CommunityScreen(initialTab: 0),
+                      ),
+                    );
                   },
                 ),
               ),

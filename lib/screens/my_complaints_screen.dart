@@ -7,6 +7,7 @@ import 'complaint_details_screen.dart';
 import '../widgets/custom_bottom_nav.dart';
 import 'camera_page.dart';
 import 'issues_map_page.dart';
+import 'community_screen.dart';
 
 class MyComplaintsScreen extends StatefulWidget {
   const MyComplaintsScreen({super.key});
@@ -144,13 +145,21 @@ class _MyComplaintsScreenState extends State<MyComplaintsScreen> {
       ),
       bottomNavigationBar: CustomBottomNav(
         currentIndex: _currentIndex,
-        transientIndices: const {1},
+        transientIndices: const {1, 2},
         onTap: (index) async {
           // If the tapped index is transient (map), don't permanently change currentIndex
           if (index == 1) {
             await Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const IssuesMapPage()),
+            );
+            return;
+          }
+
+          if (index == 3) {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const CommunityScreen()),
             );
             return;
           }

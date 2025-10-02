@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import '../widgets/custom_bottom_nav.dart';
 import '../models/complaint.dart';
+import 'camera_page.dart';
+import 'issues_map_page.dart';
+import 'community_screen.dart';
 
 class ComplaintDetailsScreen extends StatefulWidget {
   final String imageUrl;
@@ -151,7 +154,32 @@ class _ComplaintDetailsScreenState extends State<ComplaintDetailsScreen> {
       ),
       bottomNavigationBar: CustomBottomNav(
         currentIndex: _currentIndex,
-        onTap: (index) {
+        transientIndices: const {1, 2},
+        onTap: (index) async {
+          if (index == 1) {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const IssuesMapPage()),
+            );
+            return;
+          }
+          final prev = _currentIndex;
+          setState(() => _currentIndex = index);
+          if (index == 2) {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const CameraPage()),
+            );
+            if (mounted) setState(() => _currentIndex = prev);
+            return;
+          }
+          if (index == 3) {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const CommunityScreen()),
+            );
+            return;
+          }
           if (index != _currentIndex) {
             Navigator.pop(context);
           }

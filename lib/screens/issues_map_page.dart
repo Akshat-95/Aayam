@@ -6,7 +6,9 @@ import '../services/dummy_data_service.dart';
 import '../constants/app_colors.dart';
 
 class IssuesMapPage extends StatefulWidget {
-  const IssuesMapPage({super.key});
+  const IssuesMapPage({super.key, this.centerOnUser = false});
+
+  final bool centerOnUser;
 
   @override
   State<IssuesMapPage> createState() => _IssuesMapPageState();
@@ -43,6 +45,18 @@ class _IssuesMapPageState extends State<IssuesMapPage> {
       setState(() {
         _userLocation = LatLng(pos.latitude, pos.longitude);
       });
+
+      // If the caller requested centering on user, move the map once we have the location
+      if (widget.centerOnUser && _userLocation != null) {
+        // Delay slightly to ensure map has been built
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          try {
+            _mapController.move(_userLocation!, 16);
+          } catch (_) {
+            // Ignore map controller errors during tests or early lifecycle
+          }
+        });
+      }
     } catch (e) {
       // Ignore errors for now; user can still use the app
     }
