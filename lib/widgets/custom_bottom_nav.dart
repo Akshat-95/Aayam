@@ -33,8 +33,6 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
     required bool isActive,
     bool isSpecial = false,
   }) {
-    final bool isTransient = widget.transientIndices.contains(index);
-
     if (isSpecial) {
       return GestureDetector(
         onTapDown: (_) => setState(() => _pressedIndex = index),
@@ -110,7 +108,7 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(5),
-      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
       decoration: const BoxDecoration(
         color: Color.fromARGB(255, 144, 230, 203),
         borderRadius: BorderRadius.all(Radius.circular(24)),

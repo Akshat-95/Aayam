@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../constants/app_styles.dart';
 import 'feature_card.dart';
 import '../screens/camera_page.dart';
+import '../screens/my_complaints_screen.dart';
 
 class FeatureCardsGrid extends StatelessWidget {
   const FeatureCardsGrid({super.key});
@@ -58,6 +59,12 @@ class FeatureCardsGrid extends StatelessWidget {
                   icon: Icons.assignment,
                   gradientDecoration: AppStyles.efficiencyGradient,
                   onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MyComplaintsScreen(),
+                      ),
+                    );
                     // Handle my complaints tap
                     print('My Complaints tapped');
                   },

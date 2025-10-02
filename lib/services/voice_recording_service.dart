@@ -7,9 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 class VoiceRecordingService {
   static const MethodChannel _channel = MethodChannel('voice_recording');
-  static const EventChannel _eventChannel = EventChannel(
-    'voice_recording_events',
-  );
+  // Event channel removed because currently not used. Add back if needed.
 
   static StreamSubscription? _recordingSubscription;
   static bool _isRecording = false;
@@ -55,7 +53,7 @@ class VoiceRecordingService {
     try {
       if (!_isRecording) return null;
 
-      final result = await _channel.invokeMethod('stopRecording');
+      await _channel.invokeMethod('stopRecording');
       _isRecording = false;
 
       final recordingPath = _currentRecordingPath;
