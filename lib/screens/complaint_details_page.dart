@@ -23,6 +23,7 @@ class ComplaintDetailsPage extends StatefulWidget {
 }
 
 class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
+  bool _remainAnonymous = false;
   final TextEditingController _descriptionController = TextEditingController();
   final List<String> _aiClassifiedTags = [
     'Roads',
@@ -205,6 +206,28 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
                   ),
                 ],
               ),
+            ),
+
+            // Remain Anonymous section
+            Row(
+              children: [
+                Checkbox(
+                  value: _remainAnonymous,
+                  onChanged: (val) {
+                    setState(() {
+                      _remainAnonymous = val ?? false;
+                    });
+                  },
+                ),
+                const Text(
+                  'Remain Anonymous',
+                  style: TextStyle(
+                    color: AppColors.primaryText,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ),
 
             const SizedBox(height: 24),
