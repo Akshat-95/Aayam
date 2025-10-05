@@ -7,6 +7,7 @@ import '../widgets/custom_bottom_nav.dart';
 import 'camera_page.dart';
 import 'issues_map_page.dart';
 import 'community_screen.dart';
+import 'achievement_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -67,6 +68,17 @@ class _HomeScreenState extends State<HomeScreen> {
             await Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const CommunityScreen()),
+            );
+            return;
+          }
+
+          // Achievements tab (cup icon)
+          if (index == 4) {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AchievementScreen(),
+              ),
             );
             return;
           }
