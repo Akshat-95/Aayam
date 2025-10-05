@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import '../widgets/header_section.dart';
 import '../widgets/feature_cards_grid.dart';
-import '../widgets/near_you_section.dart';
+// import '../widgets/near_you_section.dart';
 import '../widgets/custom_bottom_nav.dart';
 import '../widgets/home_drawer.dart'; // Import HomeDrawer to fix the missing class error
+import '../widgets/recent_complaint_section.dart';
 import 'camera_page.dart';
 import 'issues_map_page.dart';
 import 'community_screen.dart';
 import 'achievement_screen.dart';
+import 'my_complaints_screen.dart'; // Import MyComplaintsScreen for navigation
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -43,8 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   // Feature cards grid
                   const FeatureCardsGrid(),
                   const SizedBox(height: 20),
-                  // Near you section
-                  const NearYouSection(),
+                  // Recent Complaint section
+                  const RecentComplaintSection(),
                   const SizedBox(height: 20),
                 ],
               ),
@@ -78,6 +80,16 @@ class _HomeScreenState extends State<HomeScreen> {
               context,
               MaterialPageRoute(
                 builder: (context) => const AchievementScreen(),
+              ),
+            );
+            return;
+          }
+          // Recent Complaints tab (newspaper icon)
+          if (index == 5) {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MyComplaintsScreen(),
               ),
             );
             return;
