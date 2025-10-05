@@ -4,8 +4,11 @@ import '../constants/app_styles.dart';
 import '../services/location_service.dart';
 import '../screens/notification_screen.dart';
 
+typedef AvatarTapCallback = void Function();
+
 class HeaderSection extends StatefulWidget {
-  const HeaderSection({super.key});
+  final AvatarTapCallback? onAvatarTap;
+  const HeaderSection({super.key, this.onAvatarTap});
 
   @override
   State<HeaderSection> createState() => _HeaderSectionState();
@@ -62,21 +65,24 @@ class _HeaderSectionState extends State<HeaderSection> {
             children: [
               Row(
                 children: [
-                  // User Avatar
-                  Container(
-                    width: 50,
-                    height: 50,
-                    decoration: const BoxDecoration(
-                      color: AppColors.lightGreen,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'A',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.darkGreen,
+                  // User Avatar (tappable)
+                  GestureDetector(
+                    onTap: widget.onAvatarTap,
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: const BoxDecoration(
+                        color: AppColors.lightGreen,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'A',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.darkGreen,
+                          ),
                         ),
                       ),
                     ),

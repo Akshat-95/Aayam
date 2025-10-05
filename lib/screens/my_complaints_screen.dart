@@ -85,13 +85,62 @@ class _MyComplaintsScreenState extends State<MyComplaintsScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(title: const Text('My Complaints'), centerTitle: true),
       body: Column(
         children: [
-          // Sort chips
+          // Modern gradient header
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.only(
+              top: 48,
+              left: 16,
+              right: 24,
+              bottom: 24,
+            ),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [AppColors.darkGreen, AppColors.primaryGreen],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(32),
+                bottomRight: Radius.circular(32),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0x22000000),
+                  blurRadius: 16,
+                  offset: Offset(0, 6),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: Colors.white,
+                  ),
+                  onPressed: () => Navigator.of(context).pop(),
+                  tooltip: 'Back',
+                ),
+                const SizedBox(width: 4),
+                const Text(
+                  'My Complaints',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 26,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Filter chips
           Container(
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-            color: Colors.white,
+            color: Colors.transparent,
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -120,25 +169,31 @@ class _MyComplaintsScreenState extends State<MyComplaintsScreen> {
                             ? Colors.white
                             : AppColors.secondaryText,
                       ),
+                      elevation: selected ? 2 : 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                   );
                 }).toList(),
               ),
             ),
           ),
-
           // List
           Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: complaints.length,
-              itemBuilder: (context, index) {
-                final c = complaints[index];
-                return ComplaintCard(
-                  complaint: c,
-                  onTap: () => _openDetails(c),
-                );
-              },
+            child: Container(
+              decoration: const BoxDecoration(),
+              child: ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: complaints.length,
+                itemBuilder: (context, index) {
+                  final c = complaints[index];
+                  return ComplaintCard(
+                    complaint: c,
+                    onTap: () => _openDetails(c),
+                  );
+                },
+              ),
             ),
           ),
         ],
@@ -147,7 +202,6 @@ class _MyComplaintsScreenState extends State<MyComplaintsScreen> {
         currentIndex: _currentIndex,
         transientIndices: const {1, 2},
         onTap: (index) async {
-          // If the tapped index is transient (map), don't permanently change currentIndex
           if (index == 1) {
             await Navigator.push(
               context,
@@ -155,7 +209,6 @@ class _MyComplaintsScreenState extends State<MyComplaintsScreen> {
             );
             return;
           }
-
           if (index == 3) {
             await Navigator.push(
               context,
@@ -163,11 +216,8 @@ class _MyComplaintsScreenState extends State<MyComplaintsScreen> {
             );
             return;
           }
-
           final prev = _currentIndex;
           setState(() => _currentIndex = index);
-
-          // Navigate to camera page when camera button is tapped
           if (index == 2) {
             await Navigator.push(
               context,

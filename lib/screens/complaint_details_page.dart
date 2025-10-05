@@ -143,293 +143,333 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: AppColors.primaryGreen,
-        foregroundColor: Colors.white,
-        elevation: 0,
-        title: const Text('Complaint Details'),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Photo and location preview
-            Container(
-              height: 200,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Image.file(File(widget.imagePath), fit: BoxFit.cover),
-              ),
+      body: Column(
+        children: [
+          // Modern gradient header
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.only(
+              top: 48,
+              left: 16,
+              right: 24,
+              bottom: 24,
             ),
-
-            const SizedBox(height: 16),
-
-            // Location info
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: AppColors.lightGreen,
-                borderRadius: BorderRadius.circular(8),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [AppColors.darkGreen, AppColors.primaryGreen],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.location_on,
-                    color: AppColors.primaryGreen,
-                    size: 16,
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      widget.location,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: AppColors.ecoText,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(32),
+                bottomRight: Radius.circular(32),
               ),
-            ),
-
-            // Remain Anonymous section
-            Row(
-              children: [
-                Checkbox(
-                  value: _remainAnonymous,
-                  onChanged: (val) {
-                    setState(() {
-                      _remainAnonymous = val ?? false;
-                    });
-                  },
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0x22000000),
+                  blurRadius: 16,
+                  offset: Offset(0, 6),
                 ),
+              ],
+            ),
+            child: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: Colors.white,
+                  ),
+                  onPressed: () => Navigator.of(context).pop(),
+                  tooltip: 'Back',
+                ),
+                const SizedBox(width: 4),
                 const Text(
-                  'Remain Anonymous',
+                  'Report Issue',
                   style: TextStyle(
-                    color: AppColors.primaryText,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 26,
+                    letterSpacing: 0.5,
                   ),
                 ),
               ],
             ),
-
-            const SizedBox(height: 24),
-
-            // AI Classified Tag Section
-            const Text('AI Classified Tag', style: AppStyles.sectionTitle),
-            const SizedBox(height: 12),
-
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: AppStyles.cardDecoration,
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Category',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.primaryText,
+                  // Photo preview
+                  Container(
+                    height: 200,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(18),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.08),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
                         ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(18),
+                      child: Image.file(
+                        File(widget.imagePath),
+                        fit: BoxFit.cover,
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          _showTagSelectionDialog();
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryGreen,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: const Text(
-                            'Change',
-                            style: TextStyle(
-                              color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  // Location info
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppColors.lightGreen,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.location_on,
+                          color: AppColors.primaryGreen,
+                          size: 16,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            widget.location,
+                            style: const TextStyle(
                               fontSize: 12,
+                              color: AppColors.ecoText,
                               fontWeight: FontWeight.w500,
                             ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Remain Anonymous section
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: _remainAnonymous,
+                        onChanged: (val) {
+                          setState(() {
+                            _remainAnonymous = val ?? false;
+                          });
+                        },
+                      ),
+                      const Text(
+                        'Remain Anonymous',
+                        style: TextStyle(
+                          color: AppColors.primaryText,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 24),
+                  // AI Classified Tag Section
+                  const Text(
+                    'AI Classified Tag',
+                    style: AppStyles.sectionTitle,
+                  ),
+                  const SizedBox(height: 12),
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
+                    padding: const EdgeInsets.all(16),
+                    decoration: AppStyles.cardDecoration,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Category',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.primaryText,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                _showTagSelectionDialog();
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primaryGreen,
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: const Text(
+                                  'Change',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.lightGreen,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            _selectedTag,
+                            style: const TextStyle(
+                              color: AppColors.ecoText,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    decoration: BoxDecoration(
-                      color: AppColors.lightGreen,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      _selectedTag,
+                  ),
+                  const SizedBox(height: 24),
+                  // Description Section
+                  const Text('Description', style: AppStyles.sectionTitle),
+                  const SizedBox(height: 12),
+                  Container(
+                    decoration: AppStyles.cardDecoration,
+                    child: TextField(
+                      controller: _descriptionController,
+                      maxLines: 5,
+                      decoration: InputDecoration(
+                        hintText: 'Describe the issue in detail...',
+                        hintStyle: const TextStyle(
+                          color: AppColors.lightText,
+                          fontSize: 14,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: const EdgeInsets.all(16),
+                      ),
                       style: const TextStyle(
-                        color: AppColors.ecoText,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        color: AppColors.primaryText,
                       ),
                     ),
                   ),
+                  const SizedBox(height: 16),
+                  // OR divider
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 1,
+                          color: AppColors.lightText.withOpacity(0.3),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Text(
+                          'OR',
+                          style: TextStyle(
+                            color: AppColors.lightText,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          height: 1,
+                          color: AppColors.lightText.withOpacity(0.3),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  // Voice recording
+                  VoiceRecorderWidget(
+                    onVoiceRecorded: (path) {
+                      setState(() {
+                        _voiceRecordingPath = path;
+                      });
+                    },
+                    onVoiceCleared: () {
+                      setState(() {
+                        _voiceRecordingPath = null;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 32),
+                  // Submit Button
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _isSubmitting ? null : _submitComplaint,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primaryGreen,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 2,
+                        shadowColor: AppColors.primaryGreen.withOpacity(0.15),
+                      ),
+                      child: _isSubmitting
+                          ? const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                ),
+                                SizedBox(width: 12),
+                                Text(
+                                  'Submitting...',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            )
+                          : const Text(
+                              'Submit Complaint',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
-
-            const SizedBox(height: 24),
-
-            // Description Section
-            const Text('Description', style: AppStyles.sectionTitle),
-            const SizedBox(height: 12),
-
-            // Text input
-            Container(
-              decoration: AppStyles.cardDecoration,
-              child: TextField(
-                controller: _descriptionController,
-                maxLines: 5,
-                decoration: InputDecoration(
-                  hintText: 'Describe the issue in detail...',
-                  hintStyle: const TextStyle(
-                    color: AppColors.lightText,
-                    fontSize: 14,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.all(16),
-                ),
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: AppColors.primaryText,
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            // OR divider
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 1,
-                    color: AppColors.lightText.withOpacity(0.3),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    'OR',
-                    style: TextStyle(
-                      color: AppColors.lightText,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    height: 1,
-                    color: AppColors.lightText.withOpacity(0.3),
-                  ),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 16),
-
-            // Voice recording
-            VoiceRecorderWidget(
-              onVoiceRecorded: (path) {
-                setState(() {
-                  _voiceRecordingPath = path;
-                });
-              },
-              onVoiceCleared: () {
-                setState(() {
-                  _voiceRecordingPath = null;
-                });
-              },
-            ),
-
-            const SizedBox(height: 32),
-
-            // Submit Button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _isSubmitting ? null : _submitComplaint,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryGreen,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: _isSubmitting
-                    ? const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2,
-                            ),
-                          ),
-                          SizedBox(width: 12),
-                          Text(
-                            'Submitting...',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      )
-                    : const Text(
-                        'Submit Complaint',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-              ),
-            ),
-
-            const SizedBox(height: 20),
-          ],
-        ),
+          ),
+        ],
       ),
       bottomNavigationBar: CustomBottomNav(
         currentIndex: _currentIndex,

@@ -38,23 +38,75 @@ class _AchievementScreenState extends State<AchievementScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Achievements'),
-        backgroundColor: AppColors.primaryGreen,
-      ),
-      backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Column(
-          children: [
-            _buildLeagueProgress(),
-            const SizedBox(height: 16),
-            _buildLeaderboardTabs(),
-            const SizedBox(height: 12),
-            Expanded(child: _buildLeaderboardContent()),
-            _buildRewardsButton(),
-          ],
-        ),
+      backgroundColor: AppColors.backgroundColor,
+      body: Column(
+        children: [
+          // Modern gradient header
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.only(
+              top: 48,
+              left: 16,
+              right: 24,
+              bottom: 24,
+            ),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [AppColors.darkGreen, AppColors.primaryGreen],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(32),
+                bottomRight: Radius.circular(32),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0x22000000),
+                  blurRadius: 16,
+                  offset: Offset(0, 6),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: Colors.white,
+                  ),
+                  onPressed: () => Navigator.of(context).pop(),
+                  tooltip: 'Back',
+                ),
+                const SizedBox(width: 4),
+                const Text(
+                  'Achievements',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 26,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              child: Column(
+                children: [
+                  _buildLeagueProgress(),
+                  const SizedBox(height: 16),
+                  _buildLeaderboardTabs(),
+                  const SizedBox(height: 12),
+                  Expanded(child: _buildLeaderboardContent()),
+                  _buildRewardsButton(),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: CustomBottomNav(
         currentIndex: _currentIndex,

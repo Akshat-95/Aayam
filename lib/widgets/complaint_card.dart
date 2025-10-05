@@ -12,48 +12,92 @@ class ComplaintCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Card(
-        margin: const EdgeInsets.only(bottom: 12),
-        child: ListTile(
-          contentPadding: const EdgeInsets.all(12),
-          leading: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.network(
-              complaint.imageUrl,
-              width: 96,
-              height: 64,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => Container(
-                width: 96,
-                height: 64,
-                color: AppColors.lightGreen,
-                child: const Icon(
-                  Icons.error_outline,
-                  color: AppColors.primaryGreen,
-                ),
-              ),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [AppColors.surfaceColor, AppColors.lightGreen],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.darkGreen.withOpacity(0.10),
+              blurRadius: 10,
+              offset: const Offset(0, 6),
             ),
-          ),
-          title: Text(
-            complaint.title,
-            style: const TextStyle(fontWeight: FontWeight.w600),
-          ),
-          subtitle: Column(
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 6),
-              Text(
-                complaint.category,
-                style: const TextStyle(color: AppColors.secondaryText),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  complaint.imageUrl,
+                  width: 80,
+                  height: 60,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    width: 80,
+                    height: 60,
+                    color: AppColors.lightGreen,
+                    child: const Icon(
+                      Icons.error_outline,
+                      color: AppColors.primaryGreen,
+                    ),
+                  ),
+                ),
               ),
-              const SizedBox(height: 6),
-              Text(
-                _formatDate(complaint.dateSubmitted),
-                style: const TextStyle(color: AppColors.secondaryText),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            complaint.title,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: AppColors.primaryText,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        _statusBadge(complaint.status),
+                      ],
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      complaint.category,
+                      style: const TextStyle(
+                        color: AppColors.secondaryText,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      _formatDate(complaint.dateSubmitted),
+                      style: const TextStyle(
+                        color: AppColors.secondaryText,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-          trailing: _statusBadge(complaint.status),
         ),
       ),
     );

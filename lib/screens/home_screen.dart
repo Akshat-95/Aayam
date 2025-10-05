@@ -4,6 +4,7 @@ import '../widgets/header_section.dart';
 import '../widgets/feature_cards_grid.dart';
 import '../widgets/near_you_section.dart';
 import '../widgets/custom_bottom_nav.dart';
+import '../widgets/home_drawer.dart'; // Import HomeDrawer to fix the missing class error
 import 'camera_page.dart';
 import 'issues_map_page.dart';
 import 'community_screen.dart';
@@ -19,30 +20,31 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: AppColors.backgroundColor,
+      drawer: const HomeDrawer(),
       body: Column(
         children: [
-          // Header section
-          const HeaderSection(),
-
+          // Header section with avatar tap callback
+          HeaderSection(
+            onAvatarTap: () => _scaffoldKey.currentState?.openDrawer(),
+          ),
           // Main content
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   const SizedBox(height: 20),
-
                   // Feature cards grid
                   const FeatureCardsGrid(),
-
                   const SizedBox(height: 20),
-
                   // Near you section
                   const NearYouSection(),
-
                   const SizedBox(height: 20),
                 ],
               ),
@@ -62,7 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
             );
             return;
           }
-
           // Community tab (people icon)
           if (index == 3) {
             await Navigator.push(
@@ -71,7 +72,6 @@ class _HomeScreenState extends State<HomeScreen> {
             );
             return;
           }
-
           // Achievements tab (cup icon)
           if (index == 4) {
             await Navigator.push(
@@ -82,12 +82,10 @@ class _HomeScreenState extends State<HomeScreen> {
             );
             return;
           }
-
           final prev = _currentIndex;
           setState(() {
             _currentIndex = index;
           });
-
           // Navigate to camera page when camera button is tapped
           if (index == 2) {
             await Navigator.push(

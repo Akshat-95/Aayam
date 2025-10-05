@@ -47,120 +47,118 @@ class _CommunityScreenState extends State<CommunityScreen>
       backgroundColor: AppColors.backgroundColor,
       body: Column(
         children: [
-          // Attractive header
+          // Modern gradient header (like notification screen)
           Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.primaryGreen.withOpacity(0.95),
-                  AppColors.primaryGreen,
-                  Color(0xFF059669),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                stops: const [0.0, 0.6, 1.0],
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.primaryGreen.withOpacity(0.2),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
+            width: double.infinity,
             padding: const EdgeInsets.only(
               top: 48,
               left: 16,
-              right: 16,
-              bottom: 0,
+              right: 24,
+              bottom: 24,
             ),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [AppColors.darkGreen, AppColors.primaryGreen],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(32),
+                bottomRight: Radius.circular(32),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0x22000000),
+                  blurRadius: 16,
+                  offset: Offset(0, 6),
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        color: Colors.white,
+                      ),
+                      onPressed: () => Navigator.of(context).pop(),
+                      tooltip: 'Back',
+                    ),
+                    const SizedBox(width: 4),
+                    const Text(
+                      'Community',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 26,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ],
+                ),
+                // Optionally, add a badge or icon here if needed
+              ],
+            ),
+          ),
+          // Tab strip below header
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+                BoxShadow(
+                  color: AppColors.primaryGreen.withOpacity(0.1),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            padding: const EdgeInsets.all(8),
             child: SafeArea(
+              top: false,
               bottom: false,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      const SizedBox(width: 4),
-                      const Text(
-                        'Community',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const Spacer(),
-                    ],
+              child: TabBar(
+                controller: _tabController,
+                indicator: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [AppColors.darkGreen, AppColors.primaryGreen],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
-                  const SizedBox(height: 8),
-                  // Tab strip outside the green header
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                        BoxShadow(
-                          color: AppColors.primaryGreen.withOpacity(0.1),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primaryGreen.withOpacity(0.3),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
                     ),
-                    padding: const EdgeInsets.all(8),
-                    child: SafeArea(
-                      top: false,
-                      bottom: false,
-                      child: TabBar(
-                        controller: _tabController,
-                        indicator: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              AppColors.primaryGreen.withOpacity(0.9),
-                              AppColors.primaryGreen,
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppColors.primaryGreen.withOpacity(0.3),
-                              blurRadius: 4,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        labelColor: Colors.white,
-                        unselectedLabelColor: Colors.grey.shade700,
-                        labelStyle: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                          letterSpacing: 0.3,
-                        ),
-                        unselectedLabelStyle: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                          color: Colors.grey.shade600,
-                        ),
-                        tabs: const [
-                          Tab(text: 'Updates'),
-                          Tab(text: 'Reports'),
-                          Tab(text: 'Polling'),
-                        ],
-                      ),
-                    ),
-                  ),
+                  ],
+                ),
+                labelColor: Colors.white,
+                unselectedLabelColor: Colors.grey.shade700,
+                labelStyle: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
+                  letterSpacing: 0.3,
+                ),
+                unselectedLabelStyle: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                  color: Colors.grey.shade600,
+                ),
+                tabs: const [
+                  Tab(text: 'Updates'),
+                  Tab(text: 'Reports'),
+                  Tab(text: 'Polling'),
                 ],
               ),
             ),
@@ -230,153 +228,108 @@ class _CommunityScreenState extends State<CommunityScreen>
     return ListView.separated(
       padding: const EdgeInsets.all(16),
       itemCount: updates.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 16),
+      separatorBuilder: (_, __) => const SizedBox(height: 18),
       itemBuilder: (context, index) {
         final u = updates[index];
         final isHighPriority = u['priority'] == 'High';
         final isAnnouncement = u['category'] == 'Announcement';
 
         return InkWell(
-          onTap: () {
-            // TODO: Show full update details
-          },
-          borderRadius: BorderRadius.circular(16),
+          onTap: () {},
+          borderRadius: BorderRadius.circular(18),
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: isHighPriority
-                    ? AppColors.primaryGreen.withOpacity(0.3)
-                    : Colors.grey.withOpacity(0.15),
+              gradient: const LinearGradient(
+                colors: [AppColors.surfaceColor, AppColors.lightGreen],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
+              borderRadius: BorderRadius.circular(18),
               boxShadow: [
                 BoxShadow(
-                  color: isHighPriority
-                      ? AppColors.primaryGreen.withOpacity(0.1)
-                      : Colors.grey.withOpacity(0.08),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
+                  color: AppColors.darkGreen.withOpacity(0.10),
+                  blurRadius: 12,
+                  offset: const Offset(0, 6),
                 ),
               ],
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header with category and priority
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  decoration: BoxDecoration(
-                    color: isHighPriority
-                        ? AppColors.lightGreen.withOpacity(0.3)
-                        : Colors.grey.shade50,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(16),
-                      topRight: Radius.circular(16),
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 16,
+              ),
+              leading: CircleAvatar(
+                radius: 26,
+                backgroundColor: isHighPriority
+                    ? AppColors.darkGreen
+                    : AppColors.primaryGreen,
+                child: Icon(
+                  isAnnouncement
+                      ? Icons.campaign_rounded
+                      : Icons.newspaper_rounded,
+                  color: Colors.white,
+                  size: 28,
+                ),
+              ),
+              title: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      u['title']!,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primaryText,
+                        fontSize: 17,
+                        letterSpacing: 0.1,
+                      ),
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: isAnnouncement
-                              ? AppColors.primaryGreen.withOpacity(0.1)
-                              : Colors.blue.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Text(
-                          '${u['category']}',
-                          style: TextStyle(
-                            color: isAnnouncement
-                                ? AppColors.primaryGreen
-                                : Colors.blue,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                  if (isHighPriority)
+                    Container(
+                      margin: const EdgeInsets.only(left: 8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
                       ),
-                      const Spacer(),
-                      if (isHighPriority) ...[
-                        Icon(
-                          Icons.priority_high,
-                          size: 16,
-                          color: AppColors.primaryGreen,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          'High Priority',
-                          style: TextStyle(
-                            color: AppColors.primaryGreen,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-                // Content
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${u['title']}',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black87,
-                        ),
+                      decoration: BoxDecoration(
+                        color: AppColors.darkGreen.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      const SizedBox(height: 8),
-                      Text(
-                        '${u['body']}',
+                      child: const Text(
+                        'High',
                         style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey.shade700,
-                          height: 1.4,
+                          color: AppColors.darkGreen,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
                         ),
                       ),
-                      const SizedBox(height: 12),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.access_time,
-                                size: 14,
-                                color: Colors.grey.shade500,
-                              ),
-                              const SizedBox(width: 4),
-                              Text(
-                                '2 hr ago',
-                                style: TextStyle(
-                                  color: Colors.grey.shade500,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            size: 14,
-                            color: Colors.grey.shade400,
-                          ),
-                        ],
-                      ),
-                    ],
+                    ),
+                ],
+              ),
+              subtitle: Padding(
+                padding: const EdgeInsets.only(top: 4.0),
+                child: Text(
+                  u['body']!,
+                  style: const TextStyle(
+                    color: AppColors.secondaryText,
+                    fontSize: 15,
                   ),
                 ),
-              ],
+              ),
+              trailing: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.access_time, color: AppColors.darkGreen, size: 16),
+                  const SizedBox(height: 6),
+                  const Text(
+                    '2 hr ago',
+                    style: TextStyle(
+                      color: AppColors.secondaryText,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -398,14 +351,14 @@ class _CommunityScreenState extends State<CommunityScreen>
     return ListView.separated(
       padding: const EdgeInsets.all(16),
       itemCount: reports.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 16),
+      separatorBuilder: (_, __) => const SizedBox(height: 18),
       itemBuilder: (context, index) {
         final r = reports[index];
         final score = (r['score'] as double);
         final icon = (r['icon'] as IconData);
 
         return InkWell(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(18),
           onTap: () {
             final received = 120;
             final resolved = (score * received).round();
@@ -427,158 +380,145 @@ class _CommunityScreenState extends State<CommunityScreen>
           },
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
+              gradient: const LinearGradient(
+                colors: [AppColors.surfaceColor, AppColors.lightGreen],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(18),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.primaryGreen.withOpacity(0.08),
+                  color: AppColors.darkGreen.withOpacity(0.10),
                   blurRadius: 12,
-                  spreadRadius: 0,
-                  offset: const Offset(0, 4),
+                  offset: const Offset(0, 6),
                 ),
               ],
-              border: Border.all(color: Colors.grey.withOpacity(0.1)),
             ),
-            child: Column(
-              children: [
-                // Header with icon and title
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade50,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(16),
-                      topRight: Radius.circular(16),
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 16,
+              ),
+              leading: CircleAvatar(
+                radius: 26,
+                backgroundColor: AppColors.primaryGreen,
+                child: Icon(icon, color: Colors.white, size: 28),
+              ),
+              title: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      r['body'] as String,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primaryText,
+                        fontSize: 17,
+                        letterSpacing: 0.1,
+                      ),
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: AppColors.lightGreen.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Icon(
-                          icon,
-                          color: AppColors.primaryGreen,
-                          size: 24,
-                        ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: _getScoreColor(score).withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      '${(score * 100).round()}%',
+                      style: TextStyle(
+                        color: _getScoreColor(score),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
                       ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${r['body']}',
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black87,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              'Performance Score',
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: Colors.grey.shade600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: _getScoreColor(score).withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          '${(score * 100).round()}%',
-                          style: TextStyle(
-                            color: _getScoreColor(score),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-                // Progress and Rating
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Custom Progress Bar
-                      Container(
-                        height: 12,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
-                          color: Colors.grey.shade100,
-                        ),
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            return Row(
-                              children: [
-                                Container(
-                                  width: constraints.maxWidth * score,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        _getScoreColor(score).withOpacity(0.8),
-                                        _getScoreColor(score),
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                    ),
-                                    borderRadius: BorderRadius.circular(6),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: _getScoreColor(
-                                          score,
-                                        ).withOpacity(0.3),
-                                        blurRadius: 4,
-                                        offset: const Offset(0, 2),
-                                      ),
+                ],
+              ),
+              subtitle: Padding(
+                padding: const EdgeInsets.only(top: 4.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 2),
+                    Text(
+                      'Performance Score',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    // Custom Progress Bar
+                    Container(
+                      height: 10,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: Colors.grey.shade100,
+                      ),
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          return Row(
+                            children: [
+                              Container(
+                                width: constraints.maxWidth * score,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      _getScoreColor(score).withOpacity(0.8),
+                                      _getScoreColor(score),
                                     ],
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
                                   ),
+                                  borderRadius: BorderRadius.circular(6),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: _getScoreColor(
+                                        score,
+                                      ).withOpacity(0.3),
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      // Star Rating
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(5, (i) {
-                          final filled = (i < (score * 5).round());
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 2),
-                            child: Icon(
-                              filled
-                                  ? Icons.star_rounded
-                                  : Icons.star_outline_rounded,
-                              color: filled
-                                  ? _getScoreColor(score)
-                                  : Colors.grey.shade300,
-                              size: 28,
-                            ),
+                              ),
+                            ],
                           );
-                        }),
+                        },
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 10),
+                    // Star Rating
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: List.generate(5, (i) {
+                        final filled = (i < (score * 5).round());
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 2),
+                          child: Icon(
+                            filled
+                                ? Icons.star_rounded
+                                : Icons.star_outline_rounded,
+                            color: filled
+                                ? _getScoreColor(score)
+                                : Colors.grey.shade300,
+                            size: 22,
+                          ),
+                        );
+                      }),
+                    ),
+                  ],
                 ),
-              ],
+              ),
+              trailing: const Icon(
+                Icons.arrow_forward_ios,
+                color: AppColors.secondaryText,
+                size: 18,
+              ),
             ),
           ),
         );
@@ -607,7 +547,7 @@ class _CommunityScreenState extends State<CommunityScreen>
     return ListView.separated(
       padding: const EdgeInsets.all(16),
       itemCount: polls.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 16),
+      separatorBuilder: (_, __) => const SizedBox(height: 18),
       itemBuilder: (context, index) {
         final p = polls[index];
         final results = p['results'] as Map<String, int>?;
@@ -616,262 +556,200 @@ class _CommunityScreenState extends State<CommunityScreen>
 
         return Container(
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
+            gradient: const LinearGradient(
+              colors: [AppColors.surfaceColor, AppColors.lightGreen],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(18),
             boxShadow: [
               BoxShadow(
-                color: AppColors.primaryGreen.withOpacity(0.08),
+                color: AppColors.darkGreen.withOpacity(0.10),
                 blurRadius: 12,
-                spreadRadius: 0,
-                offset: const Offset(0, 4),
+                offset: const Offset(0, 6),
               ),
             ],
-            border: Border.all(
-              color: isActive
-                  ? AppColors.primaryGreen.withOpacity(0.3)
-                  : Colors.grey.withOpacity(0.1),
-            ),
           ),
-          child: Column(
-            children: [
-              // Header with icon and status
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: isActive
-                      ? AppColors.lightGreen.withOpacity(0.2)
-                      : Colors.grey.shade50,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(16),
-                    topRight: Radius.circular(16),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: isActive
-                            ? AppColors.lightGreen.withOpacity(0.3)
-                            : Colors.grey.shade100,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Icon(
-                        icon,
-                        color: isActive
-                            ? AppColors.primaryGreen
-                            : Colors.grey.shade700,
-                        size: 24,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${p['question']}',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black87,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Row(
-                            children: [
-                              Container(
+          child: ListTile(
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 16,
+            ),
+            leading: CircleAvatar(
+              radius: 26,
+              backgroundColor: isActive
+                  ? AppColors.primaryGreen
+                  : AppColors.darkGreen,
+              child: Icon(icon, color: Colors.white, size: 28),
+            ),
+            title: Text(
+              p['question'] as String,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: AppColors.primaryText,
+                fontSize: 17,
+                letterSpacing: 0.1,
+              ),
+            ),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 4.0),
+              child: isActive
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        for (var opt in (p['options'] as List<String>))
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: InkWell(
+                              onTap: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Voted for "$opt"'),
+                                    backgroundColor: AppColors.primaryGreen,
+                                  ),
+                                );
+                              },
+                              borderRadius: BorderRadius.circular(12),
+                              child: Container(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 2,
+                                  horizontal: 16,
+                                  vertical: 10,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: isActive
-                                      ? AppColors.primaryGreen.withOpacity(0.1)
-                                      : Colors.grey.withOpacity(0.1),
+                                  border: Border.all(
+                                    color: AppColors.primaryGreen.withOpacity(
+                                      0.3,
+                                    ),
+                                  ),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Row(
                                   children: [
                                     Icon(
-                                      isActive
-                                          ? Icons.how_to_vote_rounded
-                                          : Icons.check_circle_rounded,
-                                      size: 14,
-                                      color: isActive
-                                          ? AppColors.primaryGreen
-                                          : Colors.grey.shade600,
+                                      Icons.radio_button_off,
+                                      size: 20,
+                                      color: AppColors.primaryGreen,
                                     ),
-                                    const SizedBox(width: 4),
+                                    const SizedBox(width: 12),
                                     Text(
-                                      isActive ? 'Active Poll' : 'Closed',
+                                      opt,
                                       style: TextStyle(
-                                        fontSize: 12,
-                                        color: isActive
-                                            ? AppColors.primaryGreen
-                                            : Colors.grey.shade600,
+                                        fontSize: 15,
+                                        color: Colors.grey.shade800,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                              if (!isActive) ...[
-                                const SizedBox(width: 8),
-                                Text(
-                                  '${p['totalVotes']} votes',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey.shade600,
+                            ),
+                          ),
+                      ],
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        for (var entry in results.entries)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      entry.key,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(
+                                      '${entry.value}%',
+                                      style: TextStyle(
+                                        color: AppColors.primaryGreen,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                Container(
+                                  height: 8,
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: LayoutBuilder(
+                                    builder: (context, constraints) {
+                                      final percentage =
+                                          entry.value /
+                                          results.values.reduce(
+                                            (a, b) => a + b,
+                                          );
+                                      return Stack(
+                                        children: [
+                                          Container(
+                                            width: constraints.maxWidth,
+                                            color: Colors.grey.shade100,
+                                          ),
+                                          Container(
+                                            width:
+                                                constraints.maxWidth *
+                                                percentage,
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  AppColors.primaryGreen
+                                                      .withOpacity(0.8),
+                                                  AppColors.primaryGreen,
+                                                ],
+                                                begin: Alignment.centerLeft,
+                                                end: Alignment.centerRight,
+                                              ),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: AppColors.primaryGreen
+                                                      .withOpacity(0.3),
+                                                  blurRadius: 4,
+                                                  offset: const Offset(0, 2),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
                                   ),
                                 ),
                               ],
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              // Content
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    if (isActive) ...[
-                      // Active poll options
-                      for (var opt in (p['options'] as List<String>))
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: InkWell(
-                            onTap: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Voted for "$opt"'),
-                                  backgroundColor: AppColors.primaryGreen,
-                                ),
-                              );
-                            },
-                            borderRadius: BorderRadius.circular(12),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 12,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: AppColors.primaryGreen.withOpacity(
-                                    0.3,
-                                  ),
-                                ),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.radio_button_off,
-                                    size: 20,
-                                    color: AppColors.primaryGreen,
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Text(
-                                    opt,
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.grey.shade800,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
                             ),
                           ),
-                        ),
-                    ] else ...[
-                      // Results visualization
-                      for (var entry in results!.entries)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    entry.key,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                  Text(
-                                    '${entry.value}%',
-                                    style: TextStyle(
-                                      color: AppColors.primaryGreen,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Container(
-                                height: 8,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: LayoutBuilder(
-                                  builder: (context, constraints) {
-                                    final percentage =
-                                        entry.value /
-                                        results.values.reduce((a, b) => a + b);
-                                    return Stack(
-                                      children: [
-                                        Container(
-                                          width: constraints.maxWidth,
-                                          color: Colors.grey.shade100,
-                                        ),
-                                        Container(
-                                          width:
-                                              constraints.maxWidth * percentage,
-                                          decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                              colors: [
-                                                AppColors.primaryGreen
-                                                    .withOpacity(0.8),
-                                                AppColors.primaryGreen,
-                                              ],
-                                              begin: Alignment.centerLeft,
-                                              end: Alignment.centerRight,
-                                            ),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: AppColors.primaryGreen
-                                                    .withOpacity(0.3),
-                                                blurRadius: 4,
-                                                offset: const Offset(0, 2),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
+                        const SizedBox(height: 6),
+                        Text(
+                          '${p['totalVotes']} votes',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey.shade600,
                           ),
                         ),
-                    ],
-                  ],
-                ),
-              ),
-            ],
+                      ],
+                    ),
+            ),
+            trailing: isActive
+                ? const Icon(
+                    Icons.how_to_vote_rounded,
+                    color: AppColors.primaryGreen,
+                    size: 22,
+                  )
+                : const Icon(
+                    Icons.check_circle_rounded,
+                    color: AppColors.darkGreen,
+                    size: 22,
+                  ),
           ),
         );
       },

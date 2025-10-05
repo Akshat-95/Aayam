@@ -75,7 +75,7 @@ class _IssuesMapPageState extends State<IssuesMapPage> {
       case 'safety':
         return Icons.warning; // safety
       default:
-        return Icons.location_on;
+        return Icons.help_outline; // default icon
     }
   }
 
@@ -99,125 +99,194 @@ class _IssuesMapPageState extends State<IssuesMapPage> {
   @override
   Widget build(BuildContext context) {
     final center = LatLng(_complaints[0]['lat'], _complaints[0]['lon']);
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Issues Map'),
-        backgroundColor: AppColors.primaryGreen,
-      ),
-      body: Stack(
+      backgroundColor: AppColors.backgroundColor,
+      body: Column(
         children: [
-          FlutterMap(
-            mapController: _mapController,
-            options: MapOptions(
-              center: center,
-              zoom: 15,
-              onTap: (_, __) => setState(() => _selectedComplaint = null),
+          // Modern gradient header
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.only(
+              top: 48,
+              left: 16,
+              right: 24,
+              bottom: 24,
             ),
-            // Attribution: keep a lightweight attribution overlay instead of
-            // using the package-specific AttributionWidget to avoid API mismatches.
-            children: [
-              TileLayer(
-                urlTemplate:
-                    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                subdomains: const ['a', 'b', 'c'],
-                userAgentPackageName: 'com.example.citizen_issue_app',
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [AppColors.darkGreen, AppColors.primaryGreen],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
-              MarkerLayer(
-                markers: _complaints.map((c) {
-                  final lat = c['lat'] as double;
-                  final lon = c['lon'] as double;
-                  final category = (c['category'] ?? '') as String;
-                  final iconData = _iconForCategory(category);
-                  final bgColor = _colorForCategory(category);
-
-                  return Marker(
-                    point: LatLng(lat, lon),
-                    width: 56,
-                    height: 56,
-                    builder: (ctx) => GestureDetector(
-                      onTap: () => setState(() => _selectedComplaint = c),
-                      child: Container(
-                        width: 56,
-                        height: 56,
-                        decoration: BoxDecoration(
-                          color: bgColor,
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 2),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.15),
-                              blurRadius: 4,
-                              offset: const Offset(0, 2),
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(32),
+                bottomRight: Radius.circular(32),
+              ),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0x22000000),
+                  blurRadius: 16,
+                  offset: Offset(0, 6),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: Colors.white,
+                  ),
+                  onPressed: () => Navigator.of(context).pop(),
+                  tooltip: 'Back',
+                ),
+                const SizedBox(width: 4),
+                const Text(
+                  'Issues Map',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 26,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Map and overlays
+          Expanded(
+            child: Stack(
+              children: [
+                FlutterMap(
+                  mapController: _mapController,
+                  options: MapOptions(
+                    center: center,
+                    zoom: 15,
+                    onTap: (_, __) => setState(() => _selectedComplaint = null),
+                  ),
+                  children: [
+                    TileLayer(
+                      urlTemplate:
+                          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      subdomains: const ['a', 'b', 'c'],
+                      userAgentPackageName: 'com.example.citizen_issue_app',
+                    ),
+                    MarkerLayer(
+                      markers: _complaints.map((c) {
+                        final lat = c['lat'] as double;
+                        final lon = c['lon'] as double;
+                        final category = (c['category'] ?? '') as String;
+                        final iconData = _iconForCategory(category);
+                        final bgColor = _colorForCategory(category);
+                        return Marker(
+                          point: LatLng(lat, lon),
+                          width: 56,
+                          height: 56,
+                          builder: (ctx) => GestureDetector(
+                            onTap: () => setState(() => _selectedComplaint = c),
+                            child: Container(
+                              width: 56,
+                              height: 56,
+                              decoration: BoxDecoration(
+                                color: bgColor,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.white,
+                                  width: 2,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.15),
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: Center(
+                                child: Icon(
+                                  iconData,
+                                  color: Colors.white,
+                                  size: 24,
+                                ),
+                              ),
                             ),
-                          ],
-                        ),
-                        child: Center(
-                          child: Icon(iconData, color: Colors.white, size: 24),
-                        ),
-                      ),
+                          ),
+                        );
+                      }).toList(),
                     ),
-                  );
-                }).toList(),
-              ),
-              // User location marker (if available)
-              if (_userLocation != null)
-                MarkerLayer(
-                  markers: [
-                    Marker(
-                      point: _userLocation!,
-                      width: 40,
-                      height: 40,
-                      builder: (ctx) => Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryGreen,
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 3),
-                        ),
+                    if (_userLocation != null)
+                      MarkerLayer(
+                        markers: [
+                          Marker(
+                            point: _userLocation!,
+                            width: 40,
+                            height: 40,
+                            builder: (ctx) => Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.primaryGreen,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.white,
+                                  width: 3,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
                   ],
                 ),
-            ],
-          ),
-
-          // Lightweight on-top attribution
-          Positioned(
-            left: 8,
-            bottom: 8,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.8),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Text(
-                '© OpenStreetMap contributors',
-                style: TextStyle(fontSize: 10),
-              ),
+                // Lightweight on-top attribution
+                Positioned(
+                  left: 8,
+                  bottom: 8,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Text(
+                      '© OpenStreetMap contributors',
+                      style: TextStyle(fontSize: 10),
+                    ),
+                  ),
+                ),
+                if (_selectedComplaint != null)
+                  _buildBottomCard(context, _selectedComplaint!),
+                // Floating action button
+                Positioned(
+                  right: 20,
+                  bottom: 24,
+                  child: Builder(
+                    builder: (context) => FloatingActionButton.extended(
+                      onPressed: () async {
+                        if (_userLocation == null) {
+                          await _determinePosition();
+                          if (_userLocation == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Unable to get location'),
+                              ),
+                            );
+                            return;
+                          }
+                        }
+                        _mapController.move(_userLocation!, 16);
+                      },
+                      label: const Text('Locate me'),
+                      icon: const Icon(Icons.my_location),
+                      backgroundColor: AppColors.primaryGreen,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-
-          if (_selectedComplaint != null)
-            _buildBottomCard(context, _selectedComplaint!),
         ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          if (_userLocation == null) {
-            await _determinePosition();
-            if (_userLocation == null) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Unable to get location')),
-              );
-              return;
-            }
-          }
-          _mapController.move(_userLocation!, 16);
-        },
-        label: const Text('Locate me'),
-        icon: const Icon(Icons.my_location),
-        backgroundColor: AppColors.primaryGreen,
       ),
     );
   }
