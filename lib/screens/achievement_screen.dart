@@ -3,6 +3,7 @@ import '../models/league.dart';
 import '../models/user_ranking.dart';
 import '../constants/app_colors.dart';
 import 'rewards_screen.dart';
+import '../widgets/custom_bottom_nav.dart';
 
 class AchievementScreen extends StatefulWidget {
   const AchievementScreen({Key? key}) : super(key: key);
@@ -32,6 +33,8 @@ class _AchievementScreenState extends State<AchievementScreen>
     super.dispose();
   }
 
+  int _currentIndex = 4; // Achievement tab index
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,6 +56,13 @@ class _AchievementScreenState extends State<AchievementScreen>
           ],
         ),
       ),
+      bottomNavigationBar: CustomBottomNav(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          if (index == _currentIndex) return;
+          Navigator.pop(context);
+        },
+      ),
     );
   }
 
@@ -64,16 +74,27 @@ class _AchievementScreenState extends State<AchievementScreen>
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
       decoration: BoxDecoration(
         color: Colors.white,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Colors.white, Colors.grey.shade50],
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
+            color: AppColors.primaryGreen.withOpacity(0.08),
+            spreadRadius: 2,
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.06),
+            spreadRadius: 0,
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
         ],
-        border: Border.all(color: Colors.grey.withOpacity(0.2)),
-        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.primaryGreen.withOpacity(0.1)),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
         children: [
@@ -106,15 +127,28 @@ class _AchievementScreenState extends State<AchievementScreen>
                   ),
                 ),
                 const SizedBox(height: 12),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: LinearProgressIndicator(
-                    value: progress,
-                    backgroundColor: Colors.grey[200],
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      AppColors.primaryGreen,
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.grey.shade100,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.1),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: LinearProgressIndicator(
+                      value: progress,
+                      backgroundColor: Colors.transparent,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        AppColors.primaryGreen.withOpacity(0.8),
+                      ),
+                      minHeight: 10,
                     ),
-                    minHeight: 8,
                   ),
                 ),
               ],
@@ -171,17 +205,40 @@ class _AchievementScreenState extends State<AchievementScreen>
 
   Widget _buildLeaderboardTabs() {
     return Container(
+      padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(10),
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.withOpacity(0.1)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.05),
+            spreadRadius: 0,
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: TabBar(
         controller: _tabController,
-        labelColor: Colors.black87,
-        unselectedLabelColor: Colors.grey[400],
+        labelColor: Colors.white,
+        unselectedLabelColor: Colors.grey[600],
+        labelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+        unselectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.w500,
+          fontSize: 14,
+        ),
         indicator: BoxDecoration(
           color: AppColors.primaryGreen,
           borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primaryGreen.withOpacity(0.3),
+              spreadRadius: 0,
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         tabs: const [
           Tab(text: 'League'),
@@ -217,19 +274,37 @@ class _AchievementScreenState extends State<AchievementScreen>
             : Colors.white;
         return Container(
           margin: const EdgeInsets.symmetric(vertical: 6),
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
             color: bgColor,
-            border: Border.all(color: Colors.grey.withOpacity(0.15)),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                ranking.isCurrentUser
+                    ? AppColors.lightGreen.withOpacity(0.7)
+                    : Colors.white,
+                ranking.isCurrentUser
+                    ? AppColors.lightGreen.withOpacity(0.5)
+                    : Colors.grey.shade50,
+              ],
+            ),
+            border: Border.all(
+              color: ranking.isCurrentUser
+                  ? AppColors.primaryGreen.withOpacity(0.2)
+                  : Colors.grey.withOpacity(0.15),
+            ),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.05),
-                spreadRadius: 1,
-                blurRadius: 4,
+                color: ranking.isCurrentUser
+                    ? AppColors.primaryGreen.withOpacity(0.1)
+                    : Colors.grey.withOpacity(0.08),
+                spreadRadius: 0,
+                blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
             ],
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
             children: [
@@ -298,12 +373,35 @@ class _AchievementScreenState extends State<AchievementScreen>
               MaterialPageRoute(builder: (c) => const RewardsScreen()),
             );
           },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primaryGreen,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
+          style:
+              ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryGreen,
+                foregroundColor: Colors.white,
+                elevation: 0,
+                shadowColor: Colors.transparent,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+              ).copyWith(
+                elevation: MaterialStateProperty.resolveWith<double>((
+                  Set<MaterialState> states,
+                ) {
+                  if (states.contains(MaterialState.pressed)) return 0;
+                  return 4;
+                }),
+                backgroundColor: MaterialStateProperty.resolveWith<Color>((
+                  Set<MaterialState> states,
+                ) {
+                  if (states.contains(MaterialState.pressed)) {
+                    return AppColors.primaryGreen.withOpacity(0.9);
+                  }
+                  return AppColors.primaryGreen;
+                }),
+                shadowColor: MaterialStateProperty.all(
+                  AppColors.primaryGreen.withOpacity(0.3),
+                ),
+              ),
           child: const Text(
             'View Rewards',
             style: TextStyle(
