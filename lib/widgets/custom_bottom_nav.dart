@@ -33,27 +33,22 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
     required bool isActive,
     bool isSpecial = false,
   }) {
-    if (isSpecial) {
-      return GestureDetector(
-        onTapDown: (_) => setState(() => _pressedIndex = index),
-        onTapUp: (_) => setState(() => _pressedIndex = null),
-        onTapCancel: () => setState(() => _pressedIndex = null),
-        onTap: () => _handleTap(index),
-        child: AnimatedScale(
-          scale: _pressedIndex == index ? 0.9 : 1.0,
-          duration: const Duration(milliseconds: 120),
-          child: Container(
-            width: 56,
-            height: 56,
-            decoration: const BoxDecoration(
-              color: AppColors.primaryGreen,
-              shape: BoxShape.circle,
+    final double iconSize = isSpecial ? 32 : 26;
+    final Color activeColor = isSpecial ? Colors.white : AppColors.primaryGreen;
+    final Color bgColor = isSpecial
+        ? AppColors.primaryGreen
+        : isActive
+        ? Colors.white.withOpacity(0.18)
+        : Colors.transparent;
+    final List<BoxShadow> iconShadow = isActive
+        ? [
+            BoxShadow(
+              color: AppColors.primaryGreen.withOpacity(0.25),
+              blurRadius: 16,
+              offset: const Offset(0, 4),
             ),
-            child: Icon(icon, color: Colors.white, size: 24),
-          ),
-        ),
-      );
-    }
+          ]
+        : [];
 
     return GestureDetector(
       onTapDown: (_) => setState(() => _pressedIndex = index),
@@ -61,44 +56,49 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
       onTapCancel: () => setState(() => _pressedIndex = null),
       onTap: () => _handleTap(index),
       child: AnimatedScale(
-        scale: _pressedIndex == index ? 0.9 : 1.0,
+        scale: _pressedIndex == index ? 0.92 : 1.0,
         duration: const Duration(milliseconds: 120),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: isActive ? AppColors.lightGreen : Colors.transparent,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  icon,
-                  color: isActive
-                      ? AppColors.primaryGreen
-                      : AppColors.secondaryText,
-                  size: 24,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 250),
+              padding: EdgeInsets.all(isSpecial ? 10 : 8),
+              decoration: BoxDecoration(
+                gradient: isActive
+                    ? LinearGradient(
+                        colors: [
+                          AppColors.primaryGreen.withOpacity(0.18),
+                          AppColors.lightGreen.withOpacity(0.18),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      )
+                    : null,
+                color: bgColor,
+                shape: BoxShape.circle,
+                boxShadow: iconShadow,
+                border: isActive
+                    ? Border.all(color: AppColors.primaryGreen, width: 1.5)
+                    : null,
+              ),
+              child: Icon(icon, color: activeColor, size: iconSize),
+            ),
+            if (isActive)
+              Positioned(
+                bottom: 0,
+                child: Container(
+                  width: 24,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(2),
+                    gradient: LinearGradient(
+                      colors: [AppColors.primaryGreen, AppColors.lightGreen],
+                    ),
+                  ),
                 ),
               ),
-              if (label.isNotEmpty) ...[
-                const SizedBox(height: 4),
-                AnimatedDefaultTextStyle(
-                  duration: const Duration(milliseconds: 200),
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: isActive
-                        ? AppColors.primaryGreen
-                        : AppColors.secondaryText,
-                    fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
-                  ),
-                  child: Text(label),
-                ),
-              ],
-            ],
-          ),
+          ],
         ),
       ),
     );
@@ -107,15 +107,28 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(5),
-      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
-      decoration: const BoxDecoration(
-        color: Color.fromARGB(255, 144, 230, 203),
-        borderRadius: BorderRadius.all(Radius.circular(24)),
-        boxShadow: [
+      padding: const EdgeInsets.all(8),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 18),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.white.withOpacity(0.85),
+            AppColors.lightGreen.withOpacity(0.7),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: const BorderRadius.all(Radius.circular(28)),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black38,
+            blurRadius: 32,
+            spreadRadius: 2,
+            offset: Offset(0, 8),
+          ),
           BoxShadow(
             color: Colors.black12,
-            blurRadius: 10,
+            blurRadius: 8,
             offset: Offset(0, -2),
           ),
         ],
